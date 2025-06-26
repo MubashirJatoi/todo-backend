@@ -12,7 +12,7 @@ COPY package*.json ./
 # Install project dependencies
 # Use --omit=dev if you don't need devDependencies in the final runtime image
 # Use --immutable if using package-lock.json for strict installs
-RUN npm install --omit=dev --immutable
+RUN npm install
 
 # Copy the rest of your application source code
 COPY . .
@@ -33,6 +33,9 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./ # Copy package.json for npm start
+
+
+RUN npm install --production --immutable
 
 # Expose the port your Express application listens on
 # This needs to match the PORT your Express app uses (5000 in your server.ts)
